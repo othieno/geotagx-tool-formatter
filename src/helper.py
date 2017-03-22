@@ -53,3 +53,31 @@ def to_json_string(dictionary, compress=False):
         ensure_ascii=False
     ).encode("UTF-8")
     return output.replace("\n", "") if compress else output
+
+
+def normalize_string(string, language_code):
+    """Normalizes the specified string.
+
+    The normalization process creates a dictionary that contains the specified string mapped to
+    the given language code.
+
+    Args:
+        string (str): A string to normalize.
+        language_code (str): A language code that the string will be associated with.
+
+    Returns:
+        dict: The normalized string.
+
+    Raises:
+        TypeError: If either the string or language_code argument is not a basestring.
+        ValueError: If the specified language code is not valid.
+    """
+    check_arg_type(normalize_string, "string", string, basestring)
+    check_arg_type(normalize_string, "language_code", language_code, basestring)
+
+    from geotagx_validator.helper import is_language_code
+
+    if not is_language_code(language_code):
+        raise ValueError("'{}' is not a valid language code.".format(language_code))
+
+    return {language_code: string}

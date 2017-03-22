@@ -81,3 +81,46 @@ def normalize_string(string, language_code):
         raise ValueError("'{}' is not a valid language code.".format(language_code))
 
     return {language_code: string}
+
+
+def serialize_configuration_set(configuration_set, path, overwrite=False):
+    """Writes each of the specified configurations to their respective JSON files.
+
+    Args:
+        configuration_set (dict): A set of configurations.
+        path (str): A path to the directory where the configuration files will
+            be written.
+        overwrite (bool): If set to True, any pre-existing configuration files
+            will be overwritten.
+
+    Raises:
+        TypeError: If the configuration_set argument is not a dictionary, path is not a
+            basestring, or overwrite is not a boolean.
+        ValueError: If the specified configuration set is not valid.
+        IOError: If the specified path does not lead to a writable directory.
+    """
+    check_arg_type(serialize_configuration_set, "configuration_set", configuration_set, dict)
+    check_arg_type(serialize_configuration_set, "path", path, basestring)
+    check_arg_type(serialize_configuration_set, "overwrite", overwrite, bool)
+
+    from geotagx_validator.core import is_configuration_set
+    from geotagx_validator.helper import is_directory
+    import os
+
+    valid, message = is_configuration_set(configuration_set)
+    if not valid:
+        raise ValueError(message)
+    elif not is_directory(path, check_writable=True):
+        raise IOError("The path '{}' is not a writable directory. Please make sure you have the appropriate access permissions.".format(path))
+
+    filename = {
+        "project": os.path.join(path, "project.json"),
+        "task_presenter": os.path.join(path, "task_presenter.json"),
+        "tutorial": os.path.join(path, "tutorial.json"),
+    }
+    if not overwrite and any(os.path.isfile(f) for f in filename.values()):
+        raise IOError("The directory '{}' already contains a project (project.json), task presenter (task_presenter.json) and/or a tutorial (tutorial.json) configuration. To overwrite either, set the '-f' or '--force' flag.".format(path))
+
+    for key, configuration in configuration_set.iteritems():
+        with open(filename[key], "w") as file:
+            file.write(to_json_string(configuration))

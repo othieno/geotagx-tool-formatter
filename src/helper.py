@@ -41,8 +41,8 @@ def to_json_string(dictionary, compress=False):
     Raises:
         TypeError: If dictionary argument is not a dict, or compress is not a bool.
     """
-    check_arg_type(to_json, "dictionary", dictionary, dict)
-    check_arg_type(to_json, "compress", compress, bool)
+    check_arg_type(to_json_string, "dictionary", dictionary, dict)
+    check_arg_type(to_json_string, "compress", compress, bool)
 
     from json import dumps
     output = dumps(

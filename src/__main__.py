@@ -55,7 +55,7 @@ def run(arguments):
         for path in sanitize_paths(arguments.paths):
             configuration_set = deserialize_configuration_set(path)
             serialize_configuration_set(
-                format_configuration_set(configuration_set, enable_logging=arguments.verbose),
+                format_configuration_set(configuration_set),
                 path,
                 overwrite=True
             )

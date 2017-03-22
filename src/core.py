@@ -24,5 +24,44 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
-def format_configuration_set(configuration_set, enable_logging=False):
-    raise NotImplementedError
+from geotagx_validator.helper import check_arg_type
+
+def format_configuration_set(configuration_set, validate_configuration_set=True):
+    """Formats the specified set of project configurations.
+
+    Args:
+        configurations (dict): A dictionary containing a set of configurations to format.
+        validate_configuration_set (bool): If set to True, the configurations will be
+            validated before they are processed.
+
+    Returns:
+        dict: A formatted set of project configurations.
+
+    Raises:
+        TypeError: If the configuration_set argument is not a dictionary.
+        ValueError: If the specified configuration set is invalid.
+    """
+    check_arg_type(format_configuration_set, "configuration_set", configuration_set, dict)
+    check_arg_type(format_configuration_set, "validate_configuration_set", validate_configuration_set, bool)
+
+    from project import format_project_configuration
+    from task_presenter import format_task_presenter_configuration
+    from tutorial import format_tutorial_configuration
+    from geotagx_validator.core import is_configuration_set
+
+    if validate_configuration_set:
+        valid, message = is_configuration_set(configuration_set)
+        if not valid:
+            raise ValueError(message)
+
+    formatters = {
+        "project": format_project_configuration,
+        "task_presenter": format_task_presenter_configuration,
+        "tutorial": format_tutorial_configuration,
+    }
+    for key, configuration in configuration_set.iteritems():
+        formatter = formatters.get(key, None)
+        if formatter:
+            configuration = formatter(configuration, validate_configuration=False)
+
+    return configuration_set

@@ -25,5 +25,48 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
-def format_project_configuration(project_configuration, validate_configuration=False):
+from geotagx_validator.helper import check_arg_type
+import geotagx_validator.project as validator
+
+def format_project_configuration(configuration, validate_configuration=True):
+    """Formats the specified project configuration.
+
+    Args:
+        configuration (dict): A project configuration to format.
+
+    Raises:
+        TypeError: If the configuration argument is not a dictionary, or
+            validate_configuration is not a boolean.
+        ValueError: If the specified configuration is not a valid project configuration.
+    """
+    check_arg_type(format_project_configuration, "configuration", configuration, dict)
+    check_arg_type(format_project_configuration, "validate_configuration", validate_configuration, bool)
+
+    if validate_configuration:
+        valid, message = validator.is_project_configuration(configuration)
+        if not valid:
+            raise ValueError(message)
+
+    formatters = {
+        "name": format_project_name,
+        "description": format_project_description,
+        "repository": format_project_repository,
+    }
+    for key in configuration:
+        formatter = formatters.get(key)
+        if formatter:
+            configuration[key] = formatter(configuration[key], False)
+
+    return configuration
+
+
+def format_project_name(name, validate_name=True):
+    raise NotImplementedError
+
+
+def format_project_description(description, validate_description=True):
+    raise NotImplementedError
+
+
+def format_project_repository(repository, validate_repository=True):
     raise NotImplementedError

@@ -33,6 +33,8 @@ def format_project_configuration(configuration, validate_configuration=True):
 
     Args:
         configuration (dict): A project configuration to format.
+        validate_configuration (bool): If set to True, the specified configuration
+            will be validated before it's processed.
 
     Raises:
         TypeError: If the configuration argument is not a dictionary, or

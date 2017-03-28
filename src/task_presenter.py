@@ -57,7 +57,7 @@ def format_task_presenter_configuration(configuration, validate_configuration=Fa
     formatters = {
         "language": format_task_presenter_language,
         "subject": format_task_presenter_subject,
-        "questionnaire": format_task_presenter_questionnaire,
+        "questionnaire": lambda q, v: format_task_presenter_questionnaire(q, configuration["language"], v),
     }
     for key in configuration:
         formatter = formatters.get(key)
@@ -144,5 +144,41 @@ format_task_presenter_subject.DEFAULT_CONFIGURATION = OrderedDict({
 """The default task presenter subject configuration."""
 
 
-def format_task_presenter_questionnaire(questionnaire, validate_questionnaire=True):
-    raise NotImplementedError
+def format_task_presenter_questionnaire(questionnaire, language, validate_configurations=True):
+    """Formats the specified task presenter questionnaire configuration.
+
+    Args:
+        questionnaire (dict): A questionnaire configuration to format.
+        language (dict): A language configuration used to help format the
+            questionnaire configuration.
+        validate_configurations (bool): If set to True, the specified questionnaire
+            and language configurations will be validated before they are processed.
+
+    Returns:
+        dict: The formatted questionnaire configuration.
+
+    Raises:
+        TypeError: If either the questionnaire or language argument is not a
+            dictionary, or validate_configurations is not a boolean.
+        ValueError: If either the questionnaire or language configuration is invalid.
+    """
+    check_arg_type(format_task_presenter_questionnaire, "questionnaire", questionnaire, dict)
+    check_arg_type(format_task_presenter_questionnaire, "language", language, dict)
+    check_arg_type(format_task_presenter_questionnaire, "validate_configurations", validate_configurations, bool)
+
+    if validate_configurations:
+        valid, message = validator.is_task_presenter_language(language)
+        if not valid:
+            raise ValueError(message)
+
+        valid, message = validator.is_task_presenter_questionnaire(questionnaire, language["available"])
+        if not valid:
+            raise ValueError(message)
+
+    from question import format_question
+
+    questions = questionnaire["questions"]
+    for i, question in enumerate(questions):
+        questions[i] = format_question(question, language["default"], False)
+
+    return questionnaire

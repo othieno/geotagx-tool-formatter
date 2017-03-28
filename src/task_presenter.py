@@ -36,6 +36,9 @@ def format_task_presenter_configuration(configuration, validate_configuration=Fa
         validate_configuration (bool): If set to True, the specified configuration
             will be validated before it's processed.
 
+    Returns:
+        dict: The formatted task presenter configuration.
+
     Raises:
         TypeError: If the configuration argument is not a dictionary, or
             validate_configuration is not a boolean.

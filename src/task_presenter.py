@@ -27,6 +27,7 @@
 # OR OTHER DEALINGS IN THE SOFTWARE.
 from geotagx_validator.helper import check_arg_type
 import geotagx_validator.task_presenter as validator
+from collections import OrderedDict
 
 def format_task_presenter_configuration(configuration, validate_configuration=False):
     """Formats the specified task presenter configuration.
@@ -67,7 +68,42 @@ def format_task_presenter_configuration(configuration, validate_configuration=Fa
 
 
 def format_task_presenter_language(language, validate_language=True):
-    raise NotImplementedError
+    """Formats the specified task presenter language configuration.
+
+    Args:
+        language (dict): A language configuration to format.
+        validate_language (bool): If set to True, the specified configuration
+            will be validated before it's processed.
+
+    Returns:
+        dict: The formatted language configuration.
+
+    Raises:
+        TypeError: If the language argument is not a dictionary, or
+            validate_language is not a boolean.
+        ValueError: If the specified configuration is not a valid language
+            configuration.
+    """
+    check_arg_type(format_task_presenter_language, "language", language, dict)
+    check_arg_type(format_task_presenter_language, "validate_language", validate_language, bool)
+
+    if validate_language:
+        valid, message = validator.is_task_presenter_language(language)
+        if not valid:
+            raise ValueError(message)
+
+    # Add any missing fields to the configuration.
+    for key, value in format_task_presenter_language.DEFAULT_CONFIGURATION.iteritems():
+        language.setdefault(key, value)
+
+    return language
+
+
+format_task_presenter_language.DEFAULT_CONFIGURATION = OrderedDict({
+    "default": "en",
+    "available": ["en"],
+})
+"""The default task presenter language configuration."""
 
 
 def format_task_presenter_subject(subject, validate_subject=True):

@@ -107,7 +107,41 @@ format_task_presenter_language.DEFAULT_CONFIGURATION = OrderedDict({
 
 
 def format_task_presenter_subject(subject, validate_subject=True):
-    raise NotImplementedError
+    """Formats the specified task presenter subject configuration.
+
+    Args:
+        subject (dict): A subject configuration to format.
+        validate_subject (bool): If set to True, the specified configuration
+            will be validated before it's processed.
+
+    Returns:
+        dict: The formatted subject configuration.
+
+    Raises:
+        TypeError: If the subject argument is not a dictionary, or
+            validate_subject is not a boolean.
+        ValueError: If the specified configuration is not a valid subject
+            configuration.
+    """
+    check_arg_type(format_task_presenter_subject, "subject", subject, dict)
+    check_arg_type(format_task_presenter_subject, "validate_subject", validate_subject, bool)
+
+    if validate_subject:
+        valid, message = validator.is_task_presenter_subject(subject)
+        if not valid:
+            raise ValueError(message)
+
+    # Add any missing fields to the configuration.
+    for key, value in format_task_presenter_subject.DEFAULT_CONFIGURATION.iteritems():
+        subject.setdefault(key, value)
+
+    return subject
+
+
+format_task_presenter_subject.DEFAULT_CONFIGURATION = OrderedDict({
+    "type": "image",
+})
+"""The default task presenter subject configuration."""
 
 
 def format_task_presenter_questionnaire(questionnaire, validate_questionnaire=True):

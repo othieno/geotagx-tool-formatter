@@ -179,6 +179,6 @@ def format_task_presenter_questionnaire(questionnaire, language, validate_config
 
     questions = questionnaire["questions"]
     for i, question in enumerate(questions):
-        questions[i] = format_question(question, language["default"], False)
+        questions[i] = format_question(question, language, False)
 
     return questionnaire

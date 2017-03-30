@@ -26,6 +26,10 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
 from geotagx_validator.helper import check_arg_type
+from geotagx_validator.task_presenter import is_task_presenter_language
+from geotagx_validator.question import *
+from geotagx_validator.helper import is_normalized_string
+from helper import normalize_string
 
 def format_question(question, language, validate_configurations=True):
     """Formats the specified question configuration.
@@ -50,9 +54,6 @@ def format_question(question, language, validate_configurations=True):
     check_arg_type(format_question, "validate_configurations", validate_configurations, bool)
 
     if validate_configurations:
-        from geotagx_validator.task_presenter import is_task_presenter_language
-        from geotagx_validator.question import is_question
-
         valid, message = is_task_presenter_language(language)
         if not valid:
             raise ValueError(message)
@@ -101,9 +102,6 @@ def format_question_title(question_title, language, validate_configurations=True
     check_arg_type(format_question_title, "validate_configurations", validate_configurations, bool)
 
     if validate_configurations:
-        from geotagx_validator.task_presenter import is_task_presenter_language
-        from geotagx_validator.question import is_question_title
-
         valid, message = is_task_presenter_language(language)
         if not valid:
             raise ValueError(message)
@@ -111,9 +109,6 @@ def format_question_title(question_title, language, validate_configurations=True
         valid, message = is_question_title(question_title)
         if not valid:
             raise ValueError(message)
-
-    from geotagx_validator.helper import is_normalized_string
-    from helper import normalize_string
 
     return question_title if is_normalized_string(question_title) else normalize_string(question_title, language["default"])
 
@@ -144,9 +139,6 @@ def format_question_help(question_help, language, validate_configurations=True):
     check_arg_type(format_question_help, "validate_configurations", validate_configurations, bool)
 
     if validate_configurations:
-        from geotagx_validator.task_presenter import is_task_presenter_language
-        from geotagx_validator.question import is_question_help
-
         valid, message = is_task_presenter_language(language)
         if not valid:
             raise ValueError(message)
@@ -154,9 +146,6 @@ def format_question_help(question_help, language, validate_configurations=True):
         valid, message = is_question_help(question_help)
         if not valid:
             raise ValueError(message)
-
-    from geotagx_validator.helper import is_normalized_string
-    from helper import normalize_string
 
     return question_help if is_normalized_string(question_help) else normalize_string(question_help, language["default"])
 

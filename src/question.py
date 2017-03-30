@@ -151,4 +151,72 @@ def format_question_help(question_help, language, validate_configurations=True):
 
 
 def format_question_input(question_input, language, validate_configurations=True):
+    """Formats the specified question input configuration.
+
+    Args:
+        question_input (dict): A question input configuration to format.
+        language (dict): A language configuration used to help format the
+            question input configuration.
+        validate_configurations (bool): If set to True, the specified configurations
+            will be validated before they are processed.
+
+    Returns:
+        dict: The formatted question input configuration.
+
+    Raises:
+        TypeError: If either the question_input or language argument is not a
+            dictionary, or validate_configurations is not a boolean.
+        ValueError: If either the question_input or language configuration is invalid.
+    """
+    check_arg_type(format_question_input, "question_input", question_input, dict)
+    check_arg_type(format_question_input, "language", language, dict)
+    check_arg_type(format_question_input, "validate_configurations", validate_configurations, bool)
+
+    if validate_configurations:
+        valid, message = is_task_presenter_language(language)
+        if not valid:
+            raise ValueError(message)
+
+        valid, message = is_question_input(question_input, language["default"])
+        if not valid:
+            raise ValueError(message)
+
+    formatter = {
+        "dropdown-list": __format_dropdown_list_input,
+        "multiple-option": __format_multiple_option_input,
+        "text": __format_text_input,
+        "number": __format_number_input,
+        "datetime": __format_datetime_input,
+        "url": __format_url_input,
+        "geotagging": __format_geotagging_input,
+    }.get(question_input["type"], None)
+
+    return formatter(question_input, language) if formatter else question_input
+
+
+def __format_dropdown_list_input(dropdown_list_input, language):
+    raise NotImplementedError
+
+
+def __format_multiple_option_input(multiple_option_input, language):
+    raise NotImplementedError
+
+
+def __format_text_input(text_input, language):
+    raise NotImplementedError
+
+
+def __format_number_input(number_input, language):
+    raise NotImplementedError
+
+
+def __format_datetime_input(datetime_input, language):
+    raise NotImplementedError
+
+
+def __format_url_input(url_input, language):
+    raise NotImplementedError
+
+
+def __format_geotagging_input(geotagging_input, language):
     raise NotImplementedError

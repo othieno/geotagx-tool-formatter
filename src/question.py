@@ -181,6 +181,8 @@ def format_question_input(question_input, language, validate_configurations=True
         if not valid:
             raise ValueError(message)
 
+    input_type = question_input["type"]
+    default_configuration = format_question_input.DEFAULT_CONFIGURATIONS.get(input_type, {})
     formatter = {
         "dropdown-list": __format_dropdown_list_input,
         "multiple-option": __format_multiple_option_input,
@@ -189,34 +191,94 @@ def format_question_input(question_input, language, validate_configurations=True
         "datetime": __format_datetime_input,
         "url": __format_url_input,
         "geotagging": __format_geotagging_input,
-    }.get(question_input["type"], None)
+    }.get(input_type, None)
+
+    for key, value in default_configuration.iteritems():
+        question_input.setdefault(key, value)
 
     return formatter(question_input, language) if formatter else question_input
+
+
+format_question_input.DEFAULT_CONFIGURATIONS = {
+    "dropdown-list": {
+        "options": None,
+        "prompt": None,
+        "size": 1,
+    },
+    "multiple-option": {
+        "options": None,
+        "enable-multiple-choices": False,
+        "enable-other-option": True,
+        "enable-illustrations": False,
+        "size": 8,
+    },
+    "text": {
+        "enable-long-text": False,
+        "min-length": 0,
+        "max-length": 128,
+        "placeholder": None,
+    },
+    "number": {
+        "min-value": None,
+        "max-value": None,
+        "placeholder": None,
+    },
+    "datetime": {
+        "date-format": "yyyy/MM/dd",
+        "time-format": "HH:mm:ss",
+        "from": None,
+        "to": None,
+        "disable-date": False,
+        "disable-time": False,
+    },
+    "url": {
+        "max-length": 256,
+        "placeholder": None,
+    },
+    "geotagging": {
+        "location": None,
+    },
+}
+"""The set of default configuration values for each question input."""
 
 
 def __format_dropdown_list_input(dropdown_list_input, language):
     raise NotImplementedError
 
+    return dropdown_list_input
+
 
 def __format_multiple_option_input(multiple_option_input, language):
     raise NotImplementedError
+
+    return multiple_option_input
 
 
 def __format_text_input(text_input, language):
     raise NotImplementedError
 
+    return text_input
+
 
 def __format_number_input(number_input, language):
     raise NotImplementedError
+
+    return number_input
 
 
 def __format_datetime_input(datetime_input, language):
     raise NotImplementedError
 
+    return datetime_input
+
 
 def __format_url_input(url_input, language):
     raise NotImplementedError
 
+    return url_input
+
 
 def __format_geotagging_input(geotagging_input, language):
     raise NotImplementedError
+
+    return geotagging_input

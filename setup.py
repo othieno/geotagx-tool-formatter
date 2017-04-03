@@ -29,10 +29,10 @@ setup(
     long_description=read("README.md"),
     zip_safe=True,
     install_requires=[
-        "geotagx_validator>=0.1.0",
+        "geotagx_validator>=0.1.2",
     ],
     dependency_links=[
-        "https://github.com/geotagx/geotagx-tool-validator/archive/v0.1.0.tar.gz#egg=geotagx_validator-0.1.0",
+        "https://github.com/geotagx/geotagx-tool-validator/archive/v0.1.2.tar.gz#egg=geotagx_validator-0.1.2",
     ],
     keywords="geotag-x project formatter tool command line",
     author="Jeremy Othieno",

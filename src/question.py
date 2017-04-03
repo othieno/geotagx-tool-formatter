@@ -29,7 +29,7 @@ from geotagx_validator.helper import check_arg_type
 from geotagx_validator.task_presenter import is_task_presenter_language
 from geotagx_validator.question import *
 from geotagx_validator.helper import is_normalized_string
-from helper import normalize_string
+from helper import normalize_configuration_string
 
 def format_question(question, language, validate_configurations=True):
     """Formats the specified question configuration.
@@ -110,7 +110,7 @@ def format_question_title(question_title, language, validate_configurations=True
         if not valid:
             raise ValueError(message)
 
-    return question_title if is_normalized_string(question_title) else normalize_string(question_title, language["default"])
+    return normalize_configuration_string(question_title, language["default"])
 
 
 def format_question_help(question_help, language, validate_configurations=True):
@@ -147,7 +147,7 @@ def format_question_help(question_help, language, validate_configurations=True):
         if not valid:
             raise ValueError(message)
 
-    return question_help if is_normalized_string(question_help) else normalize_string(question_help, language["default"])
+    return normalize_configuration_string(question_help, language["default"])
 
 
 def format_question_input(question_input, language, validate_configurations=True):

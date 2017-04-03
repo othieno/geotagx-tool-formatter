@@ -83,6 +83,35 @@ def normalize_string(string, language_code):
     return {language_code: string}
 
 
+def normalize_configuration_string(configuration_string, default_language):
+    """Normalizes the specified configuration string.
+
+    This helper function is similar to the normalize_string function with one
+    exception: since a configuration string can be either a basestring or
+    dictionary object, only the basestring instance will be normalized.
+
+    Args:
+        configuration_string (basestring|dict): The configuration string to normalize.
+        default_language (basestring): A language code that the string will be associated with.
+
+    Returns:
+        dict: The normalized string.
+
+    Raises:
+        TypeError: If the configuration_string argument is not a string or
+            dictionary, or default_language is not a string.
+        ValueError: If the configuration_string argument is invalid.
+    """
+    from geotagx_validator.helper import is_configuration_string
+
+    if not is_configuration_string(configuration_string):
+        raise ValueError("A configuration string must be a non-empty or normalized string.")
+    elif isinstance(configuration_string, basestring):
+        return normalize_string(configuration_string, default_language)
+    else:
+        return configuration_string
+
+
 def serialize_configuration_set(configuration_set, path, overwrite=False):
     """Writes each of the specified configurations to their respective JSON files.
 

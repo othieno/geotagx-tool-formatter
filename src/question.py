@@ -243,42 +243,105 @@ format_question_input.DEFAULT_CONFIGURATIONS = {
 
 
 def __format_dropdown_list_input(dropdown_list_input, language):
+    """Formats the specified dropdown-list input.
+
+    Args:
+        dropdown_list_input (dict): A dropdown-list input configuration to format.
+        language (dict): A language configuration used to help format the input configuration.
+
+    Returns:
+        dict: A formatted dropdown-list input configuration.
+    """
     raise NotImplementedError
 
     return dropdown_list_input
 
 
 def __format_multiple_option_input(multiple_option_input, language):
+    """Formats the specified multiple-option input.
+
+    Args:
+        multiple_option_input (dict): A multiple-option input configuration to format.
+        language (dict): A language configuration used to help format the input configuration.
+
+    Returns:
+        dict: A formatted multiple-option input configuration.
+    """
     raise NotImplementedError
 
     return multiple_option_input
 
 
 def __format_text_input(text_input, language):
+    """Formats the specified text input.
+
+    Args:
+        text_input (dict): A text input configuration to format.
+        language (dict): A language configuration used to help format the input configuration.
+
+    Returns:
+        dict: A formatted text input configuration.
+    """
     raise NotImplementedError
 
     return text_input
 
 
 def __format_number_input(number_input, language):
+    """Formats the specified number input.
+
+    Args:
+        number_input (dict): A number input configuration to format.
+        language (dict): A language configuration used to help format the input configuration.
+
+    Returns:
+        dict: A formatted number input configuration.
+    """
     raise NotImplementedError
 
     return number_input
 
 
 def __format_datetime_input(datetime_input, language):
+    """Formats the specified datetime input.
+
+    Args:
+        datetime_input (dict): A datetime input configuration to format.
+        language (dict): A language configuration used to help format the input configuration.
+
+    Returns:
+        dict: A formatted datetime input configuration.
+    """
     raise NotImplementedError
 
     return datetime_input
 
 
 def __format_url_input(url_input, language):
+    """Formats the specified URL input.
+
+    Args:
+        url_input (dict): A URL input configuration to format.
+        language (dict): A language configuration used to help format the input configuration.
+
+    Returns:
+        dict: A formatted URL input configuration.
+    """
     raise NotImplementedError
 
     return url_input
 
 
 def __format_geotagging_input(geotagging_input, language):
+    """Formats the specified geotagging input.
+
+    Args:
+        geotagging_input (dict): A geotagging input configuration to format.
+        language (dict): A language configuration used to help format the input configuration.
+
+    Returns:
+        dict: A formatted geotagging input configuration.
+    """
     raise NotImplementedError
 
     return geotagging_input

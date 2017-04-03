@@ -233,6 +233,7 @@ format_question_input.DEFAULT_CONFIGURATIONS = {
     },
     "url": {
         "max-length": 256,
+        "domain": None,
         "placeholder": None,
     },
     "geotagging": {

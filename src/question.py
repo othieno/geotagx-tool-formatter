@@ -350,6 +350,4 @@ def __format_geotagging_input(geotagging_input, language):
     Returns:
         dict: A formatted geotagging input configuration.
     """
-    raise NotImplementedError
-
     return geotagging_input

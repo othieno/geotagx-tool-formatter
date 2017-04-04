@@ -289,7 +289,7 @@ def __format_text_input(text_input, language):
         dict: A formatted text input configuration.
     """
     placeholder = text_input.get("placeholder")
-    if placeholder:
+    if placeholder is not None:
         text_input["placeholder"] = normalize_configuration_string(placeholder, language["default"])
 
     return text_input
@@ -335,7 +335,13 @@ def __format_url_input(url_input, language):
     Returns:
         dict: A formatted URL input configuration.
     """
-    raise NotImplementedError
+    domain = url_input.get("domain")
+    if domain is not None:
+        url_input["domain"] = domain.strip()
+
+    placeholder = url_input.get("placeholder")
+    if placeholder is not None:
+        url_input["placeholder"] = normalize_configuration_string(placeholder, language["default"])
 
     return url_input
 

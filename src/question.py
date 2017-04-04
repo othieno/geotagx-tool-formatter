@@ -253,7 +253,16 @@ def __format_dropdown_list_input(dropdown_list_input, language):
     Returns:
         dict: A formatted dropdown-list input configuration.
     """
-    raise NotImplementedError
+    def format_option(option):
+        raise NotImplementedError
+
+    options = multiple_option_input.get("options")
+    for i, option in enumerate(options):
+        options[i] = format_option(option)
+
+    prompt = dropdown_list_input.get("prompt")
+    if prompt is not None:
+        dropdown_list_input["prompt"] = normalize_configuration_string(prompt, language["default"])
 
     return dropdown_list_input
 
@@ -322,7 +331,10 @@ def __format_datetime_input(datetime_input, language):
     Returns:
         dict: A formatted datetime input configuration.
     """
-    raise NotImplementedError
+    for key in ["date-format", "time-format"]:
+        value = datetime_input.get(key)
+        if value is not None:
+            datetime_input[key] = value.strip()
 
     return datetime_input
 

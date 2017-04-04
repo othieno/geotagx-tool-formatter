@@ -268,7 +268,12 @@ def __format_multiple_option_input(multiple_option_input, language):
     Returns:
         dict: A formatted multiple-option input configuration.
     """
-    raise NotImplementedError
+    def format_option(option):
+        raise NotImplementedError
+
+    options = multiple_option_input.get("options")
+    for i, option in enumerate(options):
+        options[i] = format_option(option)
 
     return multiple_option_input
 
@@ -283,7 +288,9 @@ def __format_text_input(text_input, language):
     Returns:
         dict: A formatted text input configuration.
     """
-    raise NotImplementedError
+    placeholder = text_input.get("placeholder")
+    if placeholder:
+        text_input["placeholder"] = normalize_configuration_string(placeholder, language["default"])
 
     return text_input
 

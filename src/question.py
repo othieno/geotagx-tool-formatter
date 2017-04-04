@@ -305,7 +305,9 @@ def __format_number_input(number_input, language):
     Returns:
         dict: A formatted number input configuration.
     """
-    raise NotImplementedError
+    placeholder = number_input.get("placeholder")
+    if placeholder is not None:
+        number_input["placeholder"] = normalize_configuration_string(placeholder, language["default"])
 
     return number_input
 

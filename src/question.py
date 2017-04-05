@@ -253,12 +253,7 @@ def __format_dropdown_list_input(dropdown_list_input, language):
     Returns:
         dict: A formatted dropdown-list input configuration.
     """
-    def format_option(option):
-        raise NotImplementedError
-
-    options = multiple_option_input.get("options")
-    for i, option in enumerate(options):
-        options[i] = format_option(option)
+    dropdown_list_input["options"] = __format_options(dropdown_list_input["options"], language["default"])
 
     prompt = dropdown_list_input.get("prompt")
     if prompt is not None:
@@ -277,12 +272,7 @@ def __format_multiple_option_input(multiple_option_input, language):
     Returns:
         dict: A formatted multiple-option input configuration.
     """
-    def format_option(option):
-        raise NotImplementedError
-
-    options = multiple_option_input.get("options")
-    for i, option in enumerate(options):
-        options[i] = format_option(option)
+    multiple_option_input["options"] = __format_options(multiple_option_input["options"], language["default"])
 
     return multiple_option_input
 
@@ -371,3 +361,27 @@ def __format_geotagging_input(geotagging_input, language):
         dict: A formatted geotagging input configuration.
     """
     return geotagging_input
+
+
+def __format_options(options, default_language):
+    """Formats the specified list of options.
+
+    An option is usually a <label, value> pair but may contain other fields
+    in some cases. Formatting an option simply normalizes its label.
+
+    Args:
+        options (list): The list of options to format.
+        default_language (basestring): A default language used to format option labels.
+
+    Returns:
+        list: The list of formatted options.
+    """
+    for i, option in enumerate(options):
+        option["label"] = normalize_configuration_string(option["label"], default_language)
+
+        # Is the option an optgroup (group of options) ? If so, it has a subset of options in it
+        # that should be recursively processed.
+        if "options" in option:
+            option["options"] = __format_options(option["options"], default_language)
+
+    return options

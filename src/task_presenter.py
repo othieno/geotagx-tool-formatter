@@ -26,7 +26,7 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
 from geotagx_validator.helper import check_arg_type
-import geotagx_validator.task_presenter as validator
+from geotagx_validator.task_presenter import *
 from collections import OrderedDict
 
 def format_task_presenter_configuration(configuration, validate_configuration=False):
@@ -50,7 +50,7 @@ def format_task_presenter_configuration(configuration, validate_configuration=Fa
     check_arg_type(format_task_presenter_configuration, "validate_configuration", validate_configuration, bool)
 
     if validate_configuration:
-        valid, message = validator.is_task_presenter_configuration(configuration)
+        valid, message = is_task_presenter_configuration(configuration)
         if not valid:
             raise ValueError(message)
 
@@ -88,7 +88,7 @@ def format_task_presenter_language(language, validate_language=True):
     check_arg_type(format_task_presenter_language, "validate_language", validate_language, bool)
 
     if validate_language:
-        valid, message = validator.is_task_presenter_language(language)
+        valid, message = is_task_presenter_language(language)
         if not valid:
             raise ValueError(message)
 
@@ -127,7 +127,7 @@ def format_task_presenter_subject(subject, validate_subject=True):
     check_arg_type(format_task_presenter_subject, "validate_subject", validate_subject, bool)
 
     if validate_subject:
-        valid, message = validator.is_task_presenter_subject(subject)
+        valid, message = is_task_presenter_subject(subject)
         if not valid:
             raise ValueError(message)
 
@@ -167,11 +167,11 @@ def format_task_presenter_questionnaire(questionnaire, language, validate_config
     check_arg_type(format_task_presenter_questionnaire, "validate_configurations", validate_configurations, bool)
 
     if validate_configurations:
-        valid, message = validator.is_task_presenter_language(language)
+        valid, message = is_task_presenter_language(language)
         if not valid:
             raise ValueError(message)
 
-        valid, message = validator.is_task_presenter_questionnaire(questionnaire, language["available"])
+        valid, message = is_task_presenter_questionnaire(questionnaire, language["available"])
         if not valid:
             raise ValueError(message)
 

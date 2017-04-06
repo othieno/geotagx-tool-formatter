@@ -29,7 +29,7 @@ from geotagx_validator.helper import check_arg_type
 from geotagx_validator.task_presenter import *
 from collections import OrderedDict
 
-def format_task_presenter_configuration(configuration, validate_configuration=False):
+def format_task_presenter_configuration(configuration, validate_configuration=True):
     """Formats the specified task presenter configuration.
 
     Args:

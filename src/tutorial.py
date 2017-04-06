@@ -25,5 +25,33 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
-def format_tutorial_configuration(tutorial_configuration, validate_configuration=False):
+from geotagx_validator.task_presenter import is_task_presenter_configuration
+from geotagx_validator.tutorial import *
+
+def format_tutorial_configuration(
+    configuration,
+    task_presenter_configuration,
+    validate_configuration=True,
+    validate_task_presenter_configuration=True
+):
+    check_arg_type(format_tutorial_configuration, "configuration", configuration, dict)
+    check_arg_type(format_tutorial_configuration, "task_presenter_configuration", task_presenter_configuration, dict)
+    check_arg_type(format_tutorial_configuration, "validate_configuration", validate_configuration, bool)
+    check_arg_type(format_tutorial_configuration, "validate_task_presenter_configuration", validate_task_presenter_configuration, bool)
+
+    if validate_task_presenter_configuration:
+        valid, message = is_task_presenter_configuration(task_presenter_configuration)
+        if not valid:
+            raise ValueError(message)
+
+    if validate_configuration:
+        valid, message = is_tutorial_configuration(configuration, task_presenter_configuration)
+        if not valid:
+            raise ValueError(message)
+
+
+
     raise NotImplementedError
+
+
+    return configuration

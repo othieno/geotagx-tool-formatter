@@ -57,11 +57,11 @@ def format_configuration_set(configuration_set, validate_configuration_set=True)
     formatters = {
         "project": format_project_configuration,
         "task_presenter": format_task_presenter_configuration,
-        "tutorial": format_tutorial_configuration,
+        "tutorial": lambda c, v: format_tutorial_configuration(c, configuration_set["task_presenter"], v, False),
     }
     for key, configuration in configuration_set.iteritems():
         formatter = formatters.get(key, None)
         if formatter:
-            configuration = formatter(configuration, validate_configuration=False)
+            configuration = formatter(configuration, False)
 
     return configuration_set

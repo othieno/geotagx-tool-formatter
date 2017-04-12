@@ -72,7 +72,7 @@ def format_tutorial_configuration(
             raise ValueError(message)
 
     formatters = {
-        "default-message": lambda x, y: format_tutorial_default_message(x, y, False),
+        "default-message": lambda x, y: format_tutorial_default_messages(x, y, False),
         "subjects": format_tutorial_subjects,
     }
     for key in configuration:
@@ -83,13 +83,62 @@ def format_tutorial_configuration(
     return configuration
 
 
-def format_tutorial_default_message(default_message, language, validate_configurations=True):
+def format_tutorial_default_messages(default_messages, language, validate_configurations=True):
+    """Formats the specified set of default messages.
+
+    Args:
+        default_messages (dict): A set of default messages to format.
+        language (dict): A language configuration used to help format the set of
+            default messages.
+        validate_configurations (bool): If set to True, the specified set of messages
+            will be validated before they are processed.
+
+    Returns:
+        dict: The set of formatted messages.
+
+    Raises:
+        TypeError: If the default_messages or language arguments are not dictionaries,
+            or validate_configurations is not a boolean.
+        ValueError: If either of the specified configurations is invalid.
+    """
     raise NotImplementedError
 
 
 def format_tutorial_subject(tutorial_subject, language, validate_configurations=True):
+    """Formats the specified tutorial subject.
+
+    Args:
+        tutorial_subject (dict): A tutorial subject to format.
+        language (dict): A language configuration used to help format the tutorial subject.
+        validate_configurations (bool): If set to True, the specified configurations
+            will be validated before they are processed.
+
+    Returns:
+        dict: The formatted tutorial assertion.
+
+    Raises:
+        TypeError: If the tutorial_subject or language arguments are
+            not dictionaries, or validate_configurations is not a boolean.
+        ValueError: If either of the specified configurations is invalid.
+    """
     raise NotImplementedError
 
 
 def format_tutorial_subject_assertion(tutorial_subject_assertion, language, validate_configurations=True):
+    """Formats the specified tutorial assertion.
+
+    Args:
+        tutorial_subject_assertion (dict): A tutorial subject assertion to format.
+        language (dict): A language configuration used to help format the tutorial
+            subject assertion.
+        validate_configurations (bool):
+
+    Returns:
+        dict: The formatted tutorial assertion.
+
+    Raises:
+        TypeError: If the tutorial_subject_assertion or language arguments are
+            not dictionaries, or validate_configurations is not a boolean.
+        ValueError: If either of the specified configurations is invalid.
+    """
     raise NotImplementedError

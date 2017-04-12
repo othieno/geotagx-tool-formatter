@@ -188,4 +188,31 @@ def format_tutorial_subject_assertion(tutorial_subject_assertion, language, vali
             not dictionaries, or validate_configurations is not a boolean.
         ValueError: If either of the specified configurations is invalid.
     """
-    raise NotImplementedError
+    check_arg_type(format_tutorial_subject_assertion, "tutorial_subject_assertion", tutorial_subject_assertion, dict)
+    check_arg_type(format_tutorial_subject_assertion, "language", language, dict)
+    check_arg_type(format_tutorial_subject_assertion, "validate_configurations", validate_configurations, bool)
+
+    def format_assertion_messages(messages):
+        for key, message in messages.iteritems():
+            messages[key] = normalize_configuration_string(message, language["default"])
+        return messages
+
+    if validate_configurations:
+        valid, message = is_task_presenter_language(language)
+        if not valid:
+            raise ValueError(message)
+
+        valid, message = is_tutorial_subject_assertion(tutorial_subject_assertion, language["available"])
+        if not valid:
+            raise ValueError(message)
+
+    formatters = {
+        "expects": lambda s: s.strip(),
+        "messages": format_assertion_messages,
+    }
+    for key, field in tutorial_subject_assertion.iteritems():
+        formatter = formatters.get(key)
+        if formatter:
+            tutorial_subject_assertion[key] = formatter(field)
+
+    return tutorial_subject_assertion

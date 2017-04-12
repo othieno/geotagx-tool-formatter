@@ -62,7 +62,6 @@ def format_tutorial_configuration(
     check_arg_type(format_tutorial_configuration, "validate_task_presenter_configuration", validate_task_presenter_configuration, bool)
 
     def format_tutorial_subjects(tutorial_subjects, language):
-        check_arg_type(format_tutorial_subjects, "tutorial_subjects", tutorial_subjects, list)
         for i, subject in enumerate(tutorial_subjects):
             tutorial_subjects[i] = format_tutorial_subject(subject, language, False)
 
@@ -139,7 +138,37 @@ def format_tutorial_subject(tutorial_subject, language, validate_configurations=
             not dictionaries, or validate_configurations is not a boolean.
         ValueError: If either of the specified configurations is invalid.
     """
-    raise NotImplementedError
+    check_arg_type(format_tutorial_subject, "tutorial_subject", tutorial_subject, dict)
+    check_arg_type(format_tutorial_subject, "language", language, dict)
+    check_arg_type(format_tutorial_subject, "validate_configurations", validate_configurations, bool)
+
+    def format_subject_assertions(assertions):
+        for key, assertion in assertions.iteritems():
+            assertions[key] = format_tutorial_subject_assertion(assertion, language, False)
+
+        return assertions
+
+    if validate_configurations:
+        valid, message = is_task_presenter_language(language)
+        if not valid:
+            raise ValueError(message)
+
+        valid, message = is_tutorial_subject(tutorial_subject, language["available"])
+        if not valid:
+            raise ValueError(message)
+
+    formatters = {
+        "source": lambda s: s.strip(),
+        "page": lambda s: s.strip(),
+        "attribution": lambda s: s.strip(),
+        "assertions": format_subject_assertions,
+    }
+    for key, field in tutorial_subject.iteritems():
+        formatter = formatters.get(key)
+        if formatter:
+            tutorial_subject[key] = formatter(field)
+
+    return tutorial_subject
 
 
 def format_tutorial_subject_assertion(tutorial_subject_assertion, language, validate_configurations=True):

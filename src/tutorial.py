@@ -25,7 +25,9 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
+from geotagx_validator.task_presenter import is_task_presenter_language
 from geotagx_validator.tutorial import *
+from helper import normalize_configuration_string
 
 def format_tutorial_configuration(
     configuration,
@@ -101,7 +103,23 @@ def format_tutorial_default_messages(default_messages, language, validate_config
             or validate_configurations is not a boolean.
         ValueError: If either of the specified configurations is invalid.
     """
-    raise NotImplementedError
+    check_arg_type(format_tutorial_default_messages, "default_messages", default_messages, dict)
+    check_arg_type(format_tutorial_default_messages, "language", language, dict)
+    check_arg_type(format_tutorial_default_messages, "validate_configurations", validate_configurations, bool)
+
+    if validate_configurations:
+        valid, message = is_task_presenter_language(language)
+        if not valid:
+            raise ValueError(message)
+
+        valid, message = is_tutorial_default_message(default_messages, language["available"])
+        if not valid:
+            raise ValueError(message)
+
+    for key, message in default_messages.iteritems():
+        default_messages[key] = normalize_configuration_string(message, language["default"])
+
+    return default_messages
 
 
 def format_tutorial_subject(tutorial_subject, language, validate_configurations=True):

@@ -59,6 +59,7 @@ def run(arguments):
                 path,
                 overwrite=True
             )
+            print "The project located at '{}' was successfully formatted.".format(path)
     except Exception as e:
         _print_exception(e, arguments.verbose)
         exit_code = 1

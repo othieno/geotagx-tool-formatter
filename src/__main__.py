@@ -93,7 +93,7 @@ def get_argparser(subparsers=None):
     if subparsers is None:
         parser = argparse.ArgumentParser(prog="geotagx-formatter", **parser_arguments)
     elif isinstance(subparsers, argparse._SubParsersAction):
-        parser = subparsers.add_parser("build", help="Format one or more GeoTag-X projects.", **parser_arguments)
+        parser = subparsers.add_parser("format", help="Format your GeoTag-X projects.", **parser_arguments)
         parser.set_defaults(run=run)
 
     options = parser.add_argument_group("OPTIONS")

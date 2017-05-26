@@ -25,7 +25,7 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 # OR OTHER DEALINGS IN THE SOFTWARE.
 import argparse
-from geotagx_validator.helper import check_arg_type
+from geotagx_validator.helper import check_arg_type, print_exception
 
 def main():
     """Executes the application.
@@ -61,7 +61,7 @@ def run(arguments):
             )
             print "The project located at '{}' was successfully formatted.".format(path)
     except Exception as e:
-        _print_exception(e, arguments.verbose)
+        print_exception(e, arguments.verbose)
         exit_code = 1
     finally:
         return exit_code
@@ -122,22 +122,6 @@ def _setup_logging(verbose=False):
     import logging
     logging_level = logging.INFO if verbose else logging.WARNING
     logging.basicConfig(format="[%(levelname)s] %(message)s", level=logging_level)
-
-
-def _print_exception(exception, verbose=True):
-    """Prints the specified exception information.
-    If the exception does not contain a message, the stack trace will be printed
-    by default.
-
-    Args:
-        exception (Exception): The exception information to print.
-        verbose (bool): If set to True, the entire stack trace will be printed.
-    """
-    if not str(exception) or verbose:
-        import traceback
-        traceback.print_exc()
-    else:
-        print "{0}: {1}".format(exception.__class__.__name__, exception)
 
 
 if __name__ == "__main__":
